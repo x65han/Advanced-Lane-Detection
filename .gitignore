@@ -1,0 +1,6 @@
+.DS_Store
+.ipynb_checkpoints/
+calibration.p
+examples/
+solution.ipynb
+__pycache__/
