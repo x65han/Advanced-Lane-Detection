@@ -1,39 +1,54 @@
-## Advanced Lane Finding
-[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
+# Advanced Lane Detection
 
+<img align="right" src="https://cdn.instructables.com/FNN/AZF7/IG2HFKH0/FNNAZF7IG2HFKH0.LARGE.jpg" width="250px" />
+<img src="https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg"/>
 
-In this project, your goal is to write a software pipeline to identify the lane boundaries in a video, but the main output or product we want you to create is a detailed writeup of the project.  Check out the [writeup template](https://github.com/udacity/CarND-Advanced-Lane-Lines/blob/master/writeup_template.md) for this project and use it as a starting point for creating your own writeup.  
+- **Industrial Level Lane Detection Algorithm**
+- `OpenCV` + `Python`
+<br>
 
-Creating a great writeup:
----
-A great writeup should include the rubric points as well as your description of how you addressed each point.  You should include a detailed description of the code used in each step (with line-number references and code snippets where necessary), and links to other supporting documents or external references.  You should include images in your writeup to demonstrate how your code works with examples.  
-
-All that said, please be concise!  We're not looking for you to write a book here, just a brief description of how you passed each rubric point, and references to the relevant code :). 
-
-You're not required to use markdown for your writeup.  If you use another method please just submit a pdf of your writeup.
-
-The Project
 ---
 
-The goals / steps of this project are the following:
+<div align="center"><b>Lane Detection</b>&emsp;|&emsp;<a href="https://github.com/x65han/Advanced-Lane-Detection/blob/master/outputs/project_video_output.mp4?raw=true">Full Video</a>&emsp;|&emsp;<a href="https://github.com/x65han/Advanced-Lane-Detection/blob/master/report.md">Full Report</a></div><br>
+<div align="center"><img width="60%" src="https://github.com/x65han/Advanced-Lane-Detection/blob/master/assets/report/sample.gif?raw=true"/></div><br>
 
-* Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
-* Apply a distortion correction to raw images.
-* Use color transforms, gradients, etc., to create a thresholded binary image.
-* Apply a perspective transform to rectify binary image ("birds-eye view").
-* Detect lane pixels and fit to find the lane boundary.
-* Determine the curvature of the lane and vehicle position with respect to center.
-* Warp the detected lane boundaries back onto the original image.
-* Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
+## Overview
 
-The images for camera calibration are stored in the folder called `camera_cal`.  The images in `test_images` are for testing your pipeline on single frames.  If you want to extract more test images from the videos, you can simply use an image writing method like `cv2.imwrite()`, i.e., you can read the video in frame by frame as usual, and for frames you want to save for later you can write to an image file.  
+- I used a series of pipeline to better `detect lanes`.
+- The pipeline is better explained in this [research paper](http://airccj.org/CSCP/vol5/csit53211.pdf)
 
-To help the reviewer examine your work, please save examples of the output from each stage of your pipeline in the folder called `ouput_images`, and include a description in your writeup for the project of what each image shows.    The video called `project_video.mp4` is the video your pipeline should work well on.  
+<hr>
+<div align="center"><b>Undistort Image</b></div>
+<img align="center" width="100%" src="https://github.com/x65han/Advanced-Lane-Detection/blob/master/assets/report/undistorted.jpg?raw=true" />
 
-The `challenge_video.mp4` video is an extra (and optional) challenge for you if you want to test your pipeline under somewhat trickier conditions.  The `harder_challenge.mp4` video is another optional challenge and is brutal!
+<hr>
+<div align="center"><b>Unwarp Image | Bird View</b></div>
+<img align="center" width="100%" src="https://github.com/x65han/Advanced-Lane-Detection/blob/master/assets/report/unwarped.jpg?raw=true" />
 
-If you're feeling ambitious (again, totally optional though), don't stop there!  We encourage you to go out and take video of your own, calibrate your camera and show us how you would implement this project from scratch!
+<hr>
+<div align="center"><b>Apply B-Channel & L-Channel Combined Binary Image</b></div>
+<img align="center" width="100%" src="https://github.com/x65han/Advanced-Lane-Detection/blob/master/assets/report/pipeline.jpg?raw=true" />
 
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
+<hr>
+<div align="center"><b>Using Historgram to Detect Lane Pixels</b></div>
+<div align="center"><img width="60%" src="https://github.com/x65han/Advanced-Lane-Detection/blob/master/assets/report/sliding_window_histogram.jpg?raw=true" /></div>
 
+<hr>
+<div align="center"><b>Utilize Sliding Windows to detect Lanes</b></div>
+<div align="center"><img width="60%" src="https://github.com/x65han/Advanced-Lane-Detection/blob/master/assets/report/sliding_window.jpg?raw=true" /></div>
+
+<hr>
+<div align="center"><b>Highlight Lanes & Smooth Windows</b></div>
+<div align="center"><img width="60%" src="https://github.com/x65han/Advanced-Lane-Detection/blob/master/assets/report/fit_lane_highlight.jpg?raw=true" /></div>
+
+<hr>
+<div align="center"><b>Reverse Engineer & Apply Lines back</b></div>
+<div align="center"><img width="60%" src="https://github.com/x65han/Advanced-Lane-Detection/blob/master/assets/report/draw_lane.jpg?raw=true" /></div>
+
+<hr>
+<div align="center"><b>Draw Data</b></div>
+<div align="center"><img width="60%" src="https://github.com/x65han/Advanced-Lane-Detection/blob/master/assets/report/draw_data.jpg?raw=true" /></div>
+
+<hr>
+<div align="center"><b>Hooray</b></div>
+<div align="center"><img width="60%" src="https://github.com/x65han/Advanced-Lane-Detection/blob/master/assets/report/illos-home.jpg?raw=true" /></div>
