@@ -1,8 +1,8 @@
 # Import Statements
 import numpy as np
-import cv2, glob, math, pickle
+import cv2, glob, math
 from moviepy.editor import VideoFileClip
-from helper import helper, left_lane, right_lane
+from helper import Helper, Line
 
 def pipeline(original_image):
     image = np.copy(original_image)
@@ -36,15 +36,24 @@ def pipeline(original_image):
 
 
 # Init Helper
+helper = Helper()
 helper.calibrate_camera()
 
 # Process Images
-for name in glob.glob("./assets/inputs/*jpg"):
+for name in sorted(glob.glob("./assets/inputs/*jpg")):
+    left_lane = Line()
+    right_lane = Line()
     image = cv2.imread(name)
-    output_image = helper.pre_pipeline(image)
-    cv2.imwrite(name.split('/')[-1], output_image)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    image = pipeline(image)
+    helper.save(image, "./outputs/" + name.split('/')[-1])
+
 
 # Process Videos
-# for name in glob.glob("./assets/inputs/*mp4"):
-#     video = VideoFileClip(name).fl_image(pipeline)
-#     video.write_videofile('./outputs/' + name.split('/')[-1], audio=False)
+for name in glob.glob("./assets/inputs/*mp4"):
+    print(">>", name.split('/')[-1])
+    left_lane = Line()
+    right_lane = Line()
+    video = VideoFileClip(name)
+    video = video.fl_image(pipeline)
+    video.write_videofile('./outputs/' + name.split('/')[-1], audio=False)

@@ -1,18 +1,19 @@
 # Import Statements
 import numpy as np
-import cv2, glob, math, pickle
+import cv2, glob, math
 import matplotlib.pyplot as plt
 
 # Define a class to handle all help functions
 class Helper():
     def __init__(self):
         image = cv2.imread(glob.glob("./assets/inputs/*jpg")[0])
-        # Global Variable: image size in px as pair (width, height)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        # Global Variable: image size in px as pair (height, width)
         self.image_size = image.shape[:2]
         # Global Variable: image height in px
-        self.image_height = self.image_size[1]
+        self.image_height = self.image_size[0]
         # Global Variable: image width in px
-        self.image_width = image.shape[0]
+        self.image_width = image.shape[1]
         # Global Variable: camera transformation matrix
         self.mtx = None
         # Global Variable: inverse camera transformation matrix
@@ -22,7 +23,7 @@ class Helper():
         ## Global Variable: source transformation matrix
         self.src = np.float32([(575, 464), (707, 464), (258, 682),(1049, 682)])
         ## Global Variable: destination transformation matrix
-        self.dst = np.float32([(450, 0), (self.image_height - 450, 0), (450, self.image_height), (self.image_width - 450, self.image_height)])
+        self.dst = dst = np.float32([(450, 0), (self.image_width - 450,0), (450, self.image_height), (self.image_width - 450, self.image_height)])
 
     def display_and_save(self, images, titles, columns=2, file_name=False, gray=False):
         number_of_images = len(images)
@@ -45,17 +46,25 @@ class Helper():
             fig.savefig(file_name)
         # plt.show()
 
+    def save(self, image, path):
+        plt.cla()
+        plt.clf()
+        plt.close()
+        plt.imshow(image)
+        plt.savefig(path)
+
     def undistort(self, img):
         return cv2.undistort(img, self.mtx, self.dist, None, self.mtx)
 
-    def unwarp(self, img, src, dist):
-        height, width = img.shape[:2]
+    def unwarp(self, img):
         # Calculate transformation matrix
-        matrix = cv2.getPerspectiveTransform(src, dist)
-        inverse_matrix = cv2.getPerspectiveTransform(dist, src)
+        matrix = cv2.getPerspectiveTransform(self.src, self.dst)
+        inverse_matrix = cv2.getPerspectiveTransform(self.dst, self.src)
+        # record inverse matrix
+        self.inverse_matrix = inverse_matrix
         # Apply transformation
-        warped = cv2.warpPerspective(img, matrix, (width, height), flags=cv2.INTER_LINEAR)
-        return warped, matrix, inverse_matrix
+        warped = cv2.warpPerspective(img, matrix, (self.image_width, self.image_height), flags=cv2.INTER_LINEAR)
+        return warped
 
     # Define a function that thresholds the L-channel of HLS
     # Use exclusive lower bound (>) and inclusive upper (<=)
@@ -175,8 +184,7 @@ class Helper():
         # Undistort Image
         image = self.undistort(image)
         # Perspective Transform
-        image, matrix, inverse_matrix = self.unwarp(image, self.src, self.dst)
-        self.inverse_matrix = inverse_matrix
+        image = self.unwarp(image)
         # HLS L-channel Threshold
         image_L = self.hls_lthresh(image)
         # Lab B-channel Threshold
@@ -370,10 +378,3 @@ class Line():
             if len(self.current_fit) > 0:
                 # if there are still any fits in the queue, best_fit is their average
                 self.best_fit = np.average(self.current_fit, axis=0)
-
-# instance of helper
-helper = Helper()
-
-# instance of left_lane & right_lane
-left_lane = Line()
-right_lane = Line()
